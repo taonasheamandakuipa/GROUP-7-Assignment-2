@@ -1,0 +1,66 @@
+==========================================================================================
+Author: Hillary Zivuku (Actuarial Modeller (Markov Model))
+PART 8: Three-state continuous-time Markov model (Q3)
+
+=== Pooled jumps, exposure and transition intensities ===
+  origin destination  pooled_jumps  pooled_exposure_py  intensity
+0      H           D           895           49,764.00     0.0180
+1      H           I          5152           49,764.00     0.1035
+2      I           D           970           14,417.00     0.0673
+3      I           H          3533           14,417.00     0.2451
+
+=== Generator matrix Q (order H, I, D) ===
+        H       I       D
+H -0.1215  0.1035  0.0180
+I  0.2451 -0.3123  0.0673
+D  0.0000  0.0000 -0.0000
+Row sums of Q: [0. 0. 0.]  -> all zero: True
+Off-diagonal entries non-negative: True; diagonal non-positive: True
+[figure saved] outputs/figures/fig06_markov_state_diagram.png
+
+=== Mean holding times in the living states ===
+  state  total_exit_intensity  mean_holding_time_years
+0     H                0.1215                   8.2295
+1     I                0.3123                   3.2016
+
+=== Next-jump destinations from the ill state ===
+  from    next_state  probability
+0    I  H (recovery)       0.7846
+1    I     D (death)       0.2154
+
+=== Transition probability matrix P(1) ===
+       H      I      D
+H 0.8962 0.0838 0.0200
+I 0.1984 0.7417 0.0599
+D 0.0000 0.0000 1.0000
+
+=== Transition probability matrix P(2) ===
+       H      I      D
+H 0.8197 0.1373 0.0430
+I 0.3249 0.5667 0.1084
+D 0.0000 0.0000 1.0000
+
+=== Probability checks ===
+                                            check  result  max_abs_diff
+0                       P(1) entries non-negative    True           NaN
+1                       P(2) entries non-negative    True           NaN
+2                              P(1) rows sum to 1    True           NaN
+3                              P(2) rows sum to 1    True           NaN
+4  Death absorbing: row D of P(1), P(2) = (0,0,1)    True           NaN
+5         P(2) = P(1) @ P(1) (Chapman-Kolmogorov)    True        0.0000
+
+Next-jump recovery probability from I = 0.7846, but P_IH(1) = 0.1984. The jump probability ignores timing (it is where the next move goes, whenever it happens), while P_IH(1) is the chance of being healthy exactly at t = 1: some ill lives have not moved yet, and some recover and fall ill again or die within the year.
+
+=== Expected occupancy of the pooled insured cohort ===
+            H        I        D     total
+t=0 20,080.00 3,576.00   0.0000 23,656.00
+t=1 18,704.20 4,335.20   616.50 23,656.00
+t=2 17,622.00 4,783.00 1,251.00 23,656.00
+
+=== Expected covered deaths and benefit payments (USD 1,000 per death, undiscounted) ===
+           year  expected_deaths  expected_benefits_usd
+0  Year 1 (0-1)           616.50             616,500.63
+1  Year 2 (1-2)           634.46             634,456.54
+2     Two years         1,250.96           1,250,957.17
+District split reconciles to pooled claims: year 1 616,500.63 vs 616,500.63
+[figure saved] outputs/figures/fig07_markov_occupancy.png
