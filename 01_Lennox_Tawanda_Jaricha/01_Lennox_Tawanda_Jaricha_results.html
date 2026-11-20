@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Part 1 - Lennox Tawanda Jaricha</title><style>
+:root{--ink:#14213d;--muted:#5b6475;--blue:#0d47a1;--blue2:#1e88e5;--sky:#e8f2fd;--line:#dde5ef;--bg:#f6f9fc}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(120deg,#0a3f8f 0%,#1565c0 55%,#29a3ee 100%);color:#fff;padding:42px 48px 36px;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;right:-120px;top:-140px;width:520px;height:520px;border-radius:50%;background:rgba(255,255,255,.08)}
+header h1{margin:0 0 6px;font-size:30px;letter-spacing:.2px}header p{margin:0;opacity:.9;max-width:900px}
+.hyp{display:inline-block;margin-top:14px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:999px;font-size:13px}
+main{min-width:0}.wrap{display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px;max-width:1440px;margin:0 auto;padding:28px 32px 60px}
+nav{position:sticky;top:20px;align-self:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+nav h3{margin:4px 8px 10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+nav a{display:block;padding:7px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:13.5px}
+nav a:hover{background:var(--sky)}nav a small{display:block;color:var(--muted);font-size:12px}
+section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:26px;box-shadow:0 1px 2px rgba(16,40,80,.04)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+.sec-head h2{margin:0;font-size:21px;color:var(--blue)}.tag{font-size:12px;color:var(--blue2);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.who{text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}.who b{color:var(--ink);font-size:14px}.role{display:inline-block;margin:3px 0;background:#e8f0fe;color:#1a56b8;border-radius:999px;padding:1px 10px;font-weight:600;font-size:12px}
+code{background:var(--sky);padding:1px 6px;border-radius:5px;font-size:12.5px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:4px 0 18px}
+.kpi{background:linear-gradient(180deg,#f3f8fe,#eaf3fd);border:1px solid #d6e6f8;border-radius:10px;padding:12px 14px}
+.kv{font-size:21px;font-weight:700;color:var(--blue)}.kl{font-size:12.5px;color:var(--muted)}
+figure{margin:0 0 20px}figcaption{font-size:13px;font-weight:600;color:var(--blue);margin:0 0 8px}
+figure.img{text-align:center}figure.img img{max-width:min(100%,920px);height:auto;border:1px solid var(--line);border-radius:10px;padding:8px;background:#fff}
+figure.img figcaption{margin:8px 0 0;font-weight:500;color:var(--muted);font-style:italic}
+.scroll{overflow:auto;max-height:520px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}thead th{position:sticky;top:0;background:#1565c0;color:#fff;text-align:left;font-weight:600;padding:8px 10px;white-space:nowrap}
+td{padding:7px 10px;border-top:1px solid #edf1f6;vertical-align:top}tbody tr:nth-child(even){background:#f8fbff}tbody tr:hover{background:#eef5fe}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:11.5px;font-weight:700}.ok{background:#e3f6ea;color:#17803d}.warn{background:#fff1e0;color:#b55d00}.note{background:#e8f0fe;color:#1a56b8}
+p.note{background:#f3f8fe;border-left:4px solid var(--blue2);padding:10px 14px;border-radius:6px;margin:0 0 18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+details{margin-top:6px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe}summary{cursor:pointer;padding:10px 14px;font-weight:600;color:var(--blue)}
+pre{margin:0;padding:12px 16px;max-height:420px;overflow:auto;font:12px/1.45 Consolas,"Courier New",monospace;background:#0f1b2d;color:#d7e3f4;border-radius:0 0 10px 10px}
+.team table td,.team table th{font-size:13px}footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 0 30px}
+@media (max-width:980px){.wrap{grid-template-columns:1fr}nav{position:static}.two{grid-template-columns:1fr}}
+@media print{nav{display:none}.wrap{display:block}.scroll{max-height:none}section{break-inside:avoid-page}}
+
+.solo{max-width:1180px;margin:0 auto;padding:28px 32px 60px}.card{display:grid;grid-template-columns:1.2fr 1fr;gap:24px}
+.card ul{margin:6px 0 0;padding-left:20px}.big{font-size:15px;line-height:1.6}@media (max-width:900px){.card{grid-template-columns:1fr}}</style></head><body>
+<header><div class="tag" style="color:#cfe6ff">Part 1 &middot; Setup</div>
+<h1>Lennox Tawanda Jaricha</h1><p>Project Lead and Data Engineer &middot; Load and inspect the data</p>
+<span class="hyp">All figures are hypothetical: synthetic teaching data</span></header>
+<div class="solo">
+<section><div class="sec-head"><div><div class="tag">Role card</div><h2>Project Lead and Data Engineer</h2>
+<div style="margin-top:6px"><code>src/part01_load_and_inspect_Lennox_Tawanda_Jaricha.py</code></div></div>
+<div class="who">Checked by<br><b>Trish Tembo</b></div></div>
+<div class="card"><div class="big"><b>Responsibilities</b><ul><li>Set up the GitHub repository, folder structure, README and requirements</li><li>Load the five supplied CSV files without changing them</li><li>Check row counts and columns against the dataset README</li><li>Introduce the group and the two clients in the video</li></ul></div>
+<div><p class="note"><b>Key result.</b> All 5 files loaded: 24, 864, 18, 3 and 96 rows, as the README states.</p><figure class="tbl"><figcaption>Output files produced by this part</figcaption><div class="scroll"><table><thead><tr><th>Type</th><th>File</th></tr></thead><tbody><tr><td class="">Table</td><td class="">outputs/tables/p01_file_overview.csv</td></tr></tbody></table></div></figure></div></div></section>
+<section><div class="sec-head"><div><div class="tag">Results</div><h2>Load and inspect the data</h2></div></div>
+<div class="kpis"><div class="kpi"><div class="kv">5</div><div class="kl">Files loaded</div></div><div class="kpi"><div class="kv">864</div><div class="kl">Rows in age_sex.csv</div></div><div class="kpi"><div class="kv">24</div><div class="kl">Districts</div></div><div class="kpi"><div class="kv">96</div><div class="kl">Insured rows</div></div></div><figure class="tbl"><figcaption>Supplied files: rows, columns and missing cells</figcaption><div class="scroll"><table><thead><tr><th>file</th><th>rows</th><th>columns</th><th>missing_cells</th><th>column_names</th></tr></thead><tbody><tr><td class="">districts</td><td class="num">24</td><td class="num">10</td><td class="num">2</td><td class="">district_id, district_name, region, population_2020, population_2026, births_2025, deaths_2025, arrivals_2025, departures_2025, piped_water_pct</td></tr><tr><td class="">age_sex</td><td class="num">864</td><td class="num">9</td><td class="num">0</td><td class="">district_id, age_start, sex, population_2025, baseline_deaths_2025, arrivals_2025, departures_2025, births_to_women_2025, survival_5yr</td></tr><tr><td class="">life</td><td class="num">18</td><td class="num">5</td><td class="num">2</td><td class="">age_start, interval_years, person_years, deaths, ax</td></tr><tr><td class="">scen</td><td class="num">3</td><td class="num">6</td><td class="num">0</td><td class="">scenario, fertility_multiplier, arrivals_multiplier, departures_multiplier, newborn_survival_f, newborn_survival_m</td></tr><tr><td class="">ins</td><td class="num">96</td><td class="num">6</td><td class="num">0</td><td class="">district_id, origin, destination, exposure_py, transition_count, initial_lives</td></tr></tbody></table></div></figure><details><summary>Console output of Part 1 (part01_load_and_inspect_Lennox_Tawanda_Jaricha.txt)</summary><pre>==========================================================================================
+Author: Lennox Tawanda Jaricha (Project Lead and Data Engineer)
+PART 1: Loading data (Hypothetical synthetic data (HASTS206 teaching case))
+
+=== File overview ===
+        file  rows  columns  missing_cells                                                                                                                                     column_names
+0  districts    24       10              2  district_id, district_name, region, population_2020, population_2026, births_2025, deaths_2025, arrivals_2025, departures_2025, piped_water_pct
+1    age_sex   864        9              0           district_id, age_start, sex, population_2025, baseline_deaths_2025, arrivals_2025, departures_2025, births_to_women_2025, survival_5yr
+2       life    18        5              2                                                                                              age_start, interval_years, person_years, deaths, ax
+3       scen     3        6              0                               scenario, fertility_multiplier, arrivals_multiplier, departures_multiplier, newborn_survival_f, newborn_survival_m
+4        ins    96        6              0                                                                   district_id, origin, destination, exposure_py, transition_count, initial_lives
+
+=== First rows of districts ===
+  district_id district_name    region  population_2020  population_2026  births_2025  deaths_2025  arrivals_2025  departures_2025  piped_water_pct
+0         D01  District D01  Region 1           156609           173752         3939         2166           2460             2926          31.3000
+1         D02  District D02  Region 1           103634           114605         2480         1173           2705             1618          80.5000
+2         D03  District D03  Region 1            72900            77096         1008         1639           1278             1458          56.6000
+3         D04  District D04  Region 2            83366            96331         2268         1239           1303             1655              NaN
+
+=== First rows of age_sex ===
+  district_id  age_start sex  population_2025  baseline_deaths_2025  arrivals_2025  departures_2025  births_to_women_2025  survival_5yr
+0         D01          0   F             9891                    56            116              172                     0        0.9722
+1         D01          0   M             9031                    52            119              133                     0        0.9714
+2         D01          5   F             9029                     6             90              117                     0        0.9965
+3         D01          5   M             7501                     7            142              164                     0        0.9951
+
+=== First rows of life ===
+   age_start  interval_years  person_years  deaths     ax
+0          0          5.0000        125000    1000 1.2000
+1          5          5.0000        120000     108 2.5000
+2         10          5.0000        115000      69 2.5000
+3         15          5.0000        110000      88 2.5000
+
+=== First rows of scen ===
+  scenario  fertility_multiplier  arrivals_multiplier  departures_multiplier  newborn_survival_f  newborn_survival_m
+0      Low                0.8800               0.8200                 1.1200              0.9700              0.9630
+1     Base                1.0000               1.0000                 1.0000              0.9780              0.9700
+2     High                1.1200               1.1800                 0.8800              0.9860              0.9800
+
+=== First rows of ins ===
+  district_id origin destination  exposure_py  transition_count  initial_lives
+0         D01      H           I         2212               219           1137
+1         D01      H           D         2212                37           1137
+2         D01      I           H          311                67            112
+3         D01      I           D          311                23            112
+  districts  rows =   24  expected   24  -&gt; OK
+  age_sex    rows =  864  expected  864  -&gt; OK
+  life       rows =   18  expected   18  -&gt; OK
+  scen       rows =    3  expected    3  -&gt; OK
+  ins        rows =   96  expected   96  -&gt; OK
+</pre></details></section>
+<footer>Generated on 20 November 2026 by src/make_team_packages.py &middot; HASTS206 Assignment 2, University of Zimbabwe</footer>
+</div></body></html>

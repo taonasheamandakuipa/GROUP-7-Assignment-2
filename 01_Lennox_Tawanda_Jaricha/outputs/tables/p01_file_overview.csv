@@ -1,0 +1,6 @@
+file,rows,columns,missing_cells,column_names
+districts,24,10,2,"district_id, district_name, region, population_2020, population_2026, births_2025, deaths_2025, arrivals_2025, departures_2025, piped_water_pct"
+age_sex,864,9,0,"district_id, age_start, sex, population_2025, baseline_deaths_2025, arrivals_2025, departures_2025, births_to_women_2025, survival_5yr"
+life,18,5,2,"age_start, interval_years, person_years, deaths, ax"
+scen,3,6,0,"scenario, fertility_multiplier, arrivals_multiplier, departures_multiplier, newborn_survival_f, newborn_survival_m"
+ins,96,6,0,"district_id, origin, destination, exposure_py, transition_count, initial_lives"

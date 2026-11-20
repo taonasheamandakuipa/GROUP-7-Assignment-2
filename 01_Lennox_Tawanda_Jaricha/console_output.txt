@@ -1,0 +1,50 @@
+==========================================================================================
+Author: Lennox Tawanda Jaricha (Project Lead and Data Engineer)
+PART 1: Loading data (Hypothetical synthetic data (HASTS206 teaching case))
+
+=== File overview ===
+        file  rows  columns  missing_cells                                                                                                                                     column_names
+0  districts    24       10              2  district_id, district_name, region, population_2020, population_2026, births_2025, deaths_2025, arrivals_2025, departures_2025, piped_water_pct
+1    age_sex   864        9              0           district_id, age_start, sex, population_2025, baseline_deaths_2025, arrivals_2025, departures_2025, births_to_women_2025, survival_5yr
+2       life    18        5              2                                                                                              age_start, interval_years, person_years, deaths, ax
+3       scen     3        6              0                               scenario, fertility_multiplier, arrivals_multiplier, departures_multiplier, newborn_survival_f, newborn_survival_m
+4        ins    96        6              0                                                                   district_id, origin, destination, exposure_py, transition_count, initial_lives
+
+=== First rows of districts ===
+  district_id district_name    region  population_2020  population_2026  births_2025  deaths_2025  arrivals_2025  departures_2025  piped_water_pct
+0         D01  District D01  Region 1           156609           173752         3939         2166           2460             2926          31.3000
+1         D02  District D02  Region 1           103634           114605         2480         1173           2705             1618          80.5000
+2         D03  District D03  Region 1            72900            77096         1008         1639           1278             1458          56.6000
+3         D04  District D04  Region 2            83366            96331         2268         1239           1303             1655              NaN
+
+=== First rows of age_sex ===
+  district_id  age_start sex  population_2025  baseline_deaths_2025  arrivals_2025  departures_2025  births_to_women_2025  survival_5yr
+0         D01          0   F             9891                    56            116              172                     0        0.9722
+1         D01          0   M             9031                    52            119              133                     0        0.9714
+2         D01          5   F             9029                     6             90              117                     0        0.9965
+3         D01          5   M             7501                     7            142              164                     0        0.9951
+
+=== First rows of life ===
+   age_start  interval_years  person_years  deaths     ax
+0          0          5.0000        125000    1000 1.2000
+1          5          5.0000        120000     108 2.5000
+2         10          5.0000        115000      69 2.5000
+3         15          5.0000        110000      88 2.5000
+
+=== First rows of scen ===
+  scenario  fertility_multiplier  arrivals_multiplier  departures_multiplier  newborn_survival_f  newborn_survival_m
+0      Low                0.8800               0.8200                 1.1200              0.9700              0.9630
+1     Base                1.0000               1.0000                 1.0000              0.9780              0.9700
+2     High                1.1200               1.1800                 0.8800              0.9860              0.9800
+
+=== First rows of ins ===
+  district_id origin destination  exposure_py  transition_count  initial_lives
+0         D01      H           I         2212               219           1137
+1         D01      H           D         2212                37           1137
+2         D01      I           H          311                67            112
+3         D01      I           D          311                23            112
+  districts  rows =   24  expected   24  -> OK
+  age_sex    rows =  864  expected  864  -> OK
+  life       rows =   18  expected   18  -> OK
+  scen       rows =    3  expected    3  -> OK
+  ins        rows =   96  expected   96  -> OK
