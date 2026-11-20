@@ -1,0 +1,1008 @@
+{
+  "compatibilityLevel": 1567,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "expressions": [
+      {
+        "name": "DataFolder",
+        "kind": "m",
+        "expression": "\"C:\\Users\\ADMIN\\Documents\\HASTS206_Assignment2\\powerbi\\\" meta [IsParameterQuery = true, Type = \"Text\", IsParameterQueryRequired = true]",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Text"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "DistrictProfiles",
+        "columns": [
+          {
+            "name": "district_id",
+            "dataType": "string",
+            "sourceColumn": "district_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "district_name",
+            "dataType": "string",
+            "sourceColumn": "district_name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "region",
+            "dataType": "string",
+            "sourceColumn": "region",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "population_2020",
+            "dataType": "int64",
+            "sourceColumn": "population_2020",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "population_2025",
+            "dataType": "int64",
+            "sourceColumn": "population_2025",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "population_2026",
+            "dataType": "int64",
+            "sourceColumn": "population_2026",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "births_2025",
+            "dataType": "int64",
+            "sourceColumn": "births_2025",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "deaths_2025",
+            "dataType": "int64",
+            "sourceColumn": "deaths_2025",
+            "summarizeBy": "sum",
+            "formatString": "0"
+          },
+          {
+            "name": "arrivals_2025",
+            "dataType": "int64",
+            "sourceColumn": "arrivals_2025",
+            "summarizeBy": "sum",
+            "formatString": "0"
+          },
+          {
+            "name": "departures_2025",
+            "dataType": "int64",
+            "sourceColumn": "departures_2025",
+            "summarizeBy": "sum",
+            "formatString": "0"
+          },
+          {
+            "name": "reconstructed_2026",
+            "dataType": "int64",
+            "sourceColumn": "reconstructed_2026",
+            "summarizeBy": "sum",
+            "formatString": "0"
+          },
+          {
+            "name": "CBR_per_1000",
+            "dataType": "double",
+            "sourceColumn": "CBR_per_1000",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "CDR_per_1000",
+            "dataType": "double",
+            "sourceColumn": "CDR_per_1000",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "RNI_per_1000",
+            "dataType": "double",
+            "sourceColumn": "RNI_per_1000",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "NMR_per_1000",
+            "dataType": "double",
+            "sourceColumn": "NMR_per_1000",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "growth_rate_per_1000",
+            "dataType": "double",
+            "sourceColumn": "growth_rate_per_1000",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "share_u15_pct",
+            "dataType": "double",
+            "sourceColumn": "share_u15_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "share_65plus_pct",
+            "dataType": "double",
+            "sourceColumn": "share_65plus_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "piped_water_raw",
+            "dataType": "double",
+            "sourceColumn": "piped_water_raw",
+            "summarizeBy": "sum",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "piped_water_used_pct",
+            "dataType": "double",
+            "sourceColumn": "piped_water_used_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "piped_water_imputed_flag",
+            "dataType": "int64",
+            "sourceColumn": "piped_water_imputed_flag",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "cluster",
+            "dataType": "int64",
+            "sourceColumn": "cluster",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "cluster_name",
+            "dataType": "string",
+            "sourceColumn": "cluster_name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "selected_for_comparison",
+            "dataType": "int64",
+            "sourceColumn": "selected_for_comparison",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "projection_district",
+            "dataType": "int64",
+            "sourceColumn": "projection_district",
+            "summarizeBy": "none",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DistrictProfiles",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_district_profiles.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"district_id\", type text}, {\"district_name\", type text}, {\"region\", type text}, {\"population_2020\", Int64.Type}, {\"population_2025\", Int64.Type}, {\"population_2026\", Int64.Type}, {\"births_2025\", Int64.Type}, {\"deaths_2025\", Int64.Type}, {\"arrivals_2025\", Int64.Type}, {\"departures_2025\", Int64.Type}, {\"reconstructed_2026\", Int64.Type}, {\"CBR_per_1000\", type number}, {\"CDR_per_1000\", type number}, {\"RNI_per_1000\", type number}, {\"NMR_per_1000\", type number}, {\"growth_rate_per_1000\", type number}, {\"share_u15_pct\", type number}, {\"share_65plus_pct\", type number}, {\"piped_water_raw\", type number}, {\"piped_water_used_pct\", type number}, {\"piped_water_imputed_flag\", Int64.Type}, {\"cluster\", Int64.Type}, {\"cluster_name\", type text}, {\"selected_for_comparison\", Int64.Type}, {\"projection_district\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "AgeSex2025",
+        "columns": [
+          {
+            "name": "district_id",
+            "dataType": "string",
+            "sourceColumn": "district_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "age_start",
+            "dataType": "int64",
+            "sourceColumn": "age_start",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "age_group",
+            "dataType": "string",
+            "sourceColumn": "age_group",
+            "summarizeBy": "none",
+            "sortByColumn": "age_start"
+          },
+          {
+            "name": "sex",
+            "dataType": "string",
+            "sourceColumn": "sex",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "population_2025",
+            "dataType": "int64",
+            "sourceColumn": "population_2025",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "AgeSex2025",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_age_sex_2025.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"district_id\", type text}, {\"age_start\", Int64.Type}, {\"age_group\", type text}, {\"sex\", type text}, {\"population_2025\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ProjectionAgeSex",
+        "columns": [
+          {
+            "name": "district_id",
+            "dataType": "string",
+            "sourceColumn": "district_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "scenario",
+            "dataType": "string",
+            "sourceColumn": "scenario",
+            "summarizeBy": "none",
+            "sortByColumn": "scenario_order"
+          },
+          {
+            "name": "sex",
+            "dataType": "string",
+            "sourceColumn": "sex",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "age_start",
+            "dataType": "int64",
+            "sourceColumn": "age_start",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "age_group",
+            "dataType": "string",
+            "sourceColumn": "age_group",
+            "summarizeBy": "none",
+            "sortByColumn": "age_start"
+          },
+          {
+            "name": "pop_2025",
+            "dataType": "double",
+            "sourceColumn": "pop_2025",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "survivors_2030",
+            "dataType": "double",
+            "sourceColumn": "survivors_2030",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "surviving_births",
+            "dataType": "double",
+            "sourceColumn": "surviving_births",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "net_migration_5yr",
+            "dataType": "double",
+            "sourceColumn": "net_migration_5yr",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "pop_2030",
+            "dataType": "double",
+            "sourceColumn": "pop_2030",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "scenario_order",
+            "dataType": "int64",
+            "sourceColumn": "scenario_order",
+            "summarizeBy": "none",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "ProjectionAgeSex",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_projection_by_age_sex.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"district_id\", type text}, {\"scenario\", type text}, {\"sex\", type text}, {\"age_start\", Int64.Type}, {\"age_group\", type text}, {\"pop_2025\", type number}, {\"survivors_2030\", type number}, {\"surviving_births\", type number}, {\"net_migration_5yr\", type number}, {\"pop_2030\", type number}, {\"scenario_order\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ProjectionMethods",
+        "columns": [
+          {
+            "name": "method",
+            "dataType": "string",
+            "sourceColumn": "method",
+            "summarizeBy": "none",
+            "sortByColumn": "method_order"
+          },
+          {
+            "name": "P2030",
+            "dataType": "double",
+            "sourceColumn": "P2030",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          },
+          {
+            "name": "share_u15_pct",
+            "dataType": "double",
+            "sourceColumn": "share_u15_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "share_65plus_pct",
+            "dataType": "double",
+            "sourceColumn": "share_65plus_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "change_from_2025",
+            "dataType": "double",
+            "sourceColumn": "change_from_2025",
+            "summarizeBy": "sum",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "pct_change_from_2025",
+            "dataType": "double",
+            "sourceColumn": "pct_change_from_2025",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "difference_vs_CC_Base",
+            "dataType": "double",
+            "sourceColumn": "difference_vs_CC_Base",
+            "summarizeBy": "sum",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "method_order",
+            "dataType": "int64",
+            "sourceColumn": "method_order",
+            "summarizeBy": "none",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "ProjectionMethods",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"p07_projection_comparison.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"method\", type text}, {\"P2030\", type number}, {\"share_u15_pct\", type number}, {\"share_65plus_pct\", type number}, {\"change_from_2025\", type number}, {\"pct_change_from_2025\", type number}, {\"difference_vs_CC_Base\", type number}, {\"method_order\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "MarkovOccupancy",
+        "columns": [
+          {
+            "name": "district_id",
+            "dataType": "string",
+            "sourceColumn": "district_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "t_years",
+            "dataType": "int64",
+            "sourceColumn": "t_years",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "state",
+            "dataType": "string",
+            "sourceColumn": "state",
+            "summarizeBy": "none",
+            "sortByColumn": "state_order"
+          },
+          {
+            "name": "expected_lives",
+            "dataType": "double",
+            "sourceColumn": "expected_lives",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "state_order",
+            "dataType": "int64",
+            "sourceColumn": "state_order",
+            "summarizeBy": "none",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "MarkovOccupancy",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_markov_occupancy_by_district.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"district_id\", type text}, {\"t_years\", Int64.Type}, {\"state\", type text}, {\"expected_lives\", type number}, {\"state_order\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ExpectedClaims",
+        "columns": [
+          {
+            "name": "district_id",
+            "dataType": "string",
+            "sourceColumn": "district_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "policy_year",
+            "dataType": "int64",
+            "sourceColumn": "policy_year",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "expected_deaths",
+            "dataType": "double",
+            "sourceColumn": "expected_deaths",
+            "summarizeBy": "sum",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "expected_benefits_usd",
+            "dataType": "double",
+            "sourceColumn": "expected_benefits_usd",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "ExpectedClaims",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_expected_claims_by_district.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"district_id\", type text}, {\"policy_year\", Int64.Type}, {\"expected_deaths\", type number}, {\"expected_benefits_usd\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "TransitionMatrices",
+        "columns": [
+          {
+            "name": "t_years",
+            "dataType": "int64",
+            "sourceColumn": "t_years",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "from_state",
+            "dataType": "string",
+            "sourceColumn": "from_state",
+            "summarizeBy": "none",
+            "sortByColumn": "from_order"
+          },
+          {
+            "name": "to_state",
+            "dataType": "string",
+            "sourceColumn": "to_state",
+            "summarizeBy": "none",
+            "sortByColumn": "to_order"
+          },
+          {
+            "name": "probability",
+            "dataType": "double",
+            "sourceColumn": "probability",
+            "summarizeBy": "sum",
+            "formatString": "0.0000"
+          },
+          {
+            "name": "from_order",
+            "dataType": "int64",
+            "sourceColumn": "from_order",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "to_order",
+            "dataType": "int64",
+            "sourceColumn": "to_order",
+            "summarizeBy": "none",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "TransitionMatrices",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_markov_transition_matrices.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"t_years\", Int64.Type}, {\"from_state\", type text}, {\"to_state\", type text}, {\"probability\", type number}, {\"from_order\", Int64.Type}, {\"to_order\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ClusterCentroids",
+        "columns": [
+          {
+            "name": "cluster",
+            "dataType": "int64",
+            "sourceColumn": "cluster",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "share_u15_pct",
+            "dataType": "double",
+            "sourceColumn": "share_u15_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "share_65plus_pct",
+            "dataType": "double",
+            "sourceColumn": "share_65plus_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "nmr_per_1000",
+            "dataType": "double",
+            "sourceColumn": "nmr_per_1000",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "piped_water_pct",
+            "dataType": "double",
+            "sourceColumn": "piped_water_pct",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          },
+          {
+            "name": "n_districts",
+            "dataType": "int64",
+            "sourceColumn": "n_districts",
+            "summarizeBy": "sum",
+            "formatString": "0"
+          },
+          {
+            "name": "cluster_name",
+            "dataType": "string",
+            "sourceColumn": "cluster_name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "districts",
+            "dataType": "string",
+            "sourceColumn": "districts",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "ClusterCentroids",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_cluster_centroids.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"cluster\", Int64.Type}, {\"share_u15_pct\", type number}, {\"share_65plus_pct\", type number}, {\"nmr_per_1000\", type number}, {\"piped_water_pct\", type number}, {\"n_districts\", Int64.Type}, {\"cluster_name\", type text}, {\"districts\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "KMeansDiagnostics",
+        "columns": [
+          {
+            "name": "k",
+            "dataType": "int64",
+            "sourceColumn": "k",
+            "summarizeBy": "none",
+            "formatString": "0"
+          },
+          {
+            "name": "WCSS",
+            "dataType": "double",
+            "sourceColumn": "WCSS",
+            "summarizeBy": "sum",
+            "formatString": "0.00"
+          },
+          {
+            "name": "mean_silhouette",
+            "dataType": "double",
+            "sourceColumn": "mean_silhouette",
+            "summarizeBy": "sum",
+            "formatString": "0.000"
+          },
+          {
+            "name": "pct_reduction_from_previous_k",
+            "dataType": "double",
+            "sourceColumn": "pct_reduction_from_previous_k",
+            "summarizeBy": "sum",
+            "formatString": "0.0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "KMeansDiagnostics",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_kmeans_diagnostics.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"k\", Int64.Type}, {\"WCSS\", type number}, {\"mean_silhouette\", type number}, {\"pct_reduction_from_previous_k\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Reconciliation",
+        "columns": [
+          {
+            "name": "figure",
+            "dataType": "string",
+            "sourceColumn": "figure",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "python_value",
+            "dataType": "double",
+            "sourceColumn": "python_value",
+            "summarizeBy": "sum",
+            "formatString": "#,0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Reconciliation",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"pbi_reconciliation_targets.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Blanks = Table.TransformColumns(Promoted, {}, (x) => if x = \"\" then null else x),",
+                "    Typed = Table.TransformColumnTypes(Blanks, {{\"figure\", type text}, {\"python_value\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "KeyMeasures",
+        "columns": [
+          {
+            "name": "Column",
+            "dataType": "string",
+            "sourceColumn": "Column",
+            "isHidden": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "KeyMeasures",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #table(type table [Column = text], {{\"x\"}})",
+                "in",
+                "    Source"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Population 2025",
+            "expression": "SUM(DistrictProfiles[population_2025])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Population 2026 reported",
+            "expression": "SUM(DistrictProfiles[population_2026])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Population 2026 reconstructed",
+            "expression": "SUM(DistrictProfiles[reconstructed_2026])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Balance gap",
+            "expression": "[Population 2026 reported] - [Population 2026 reconstructed]",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Mid-year exposure 2025",
+            "expression": "([Population 2025] + [Population 2026 reported]) / 2",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "CBR per 1000",
+            "expression": "DIVIDE(SUM(DistrictProfiles[births_2025]) * 1000, [Mid-year exposure 2025])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "CDR per 1000",
+            "expression": "DIVIDE(SUM(DistrictProfiles[deaths_2025]) * 1000, [Mid-year exposure 2025])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "NMR per 1000",
+            "expression": "DIVIDE((SUM(DistrictProfiles[arrivals_2025]) - SUM(DistrictProfiles[departures_2025])) * 1000, [Mid-year exposure 2025])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Districts",
+            "expression": "DISTINCTCOUNT(DistrictProfiles[district_id])",
+            "formatString": "0"
+          },
+          {
+            "name": "Males (left)",
+            "expression": "CALCULATE(SUM(AgeSex2025[population_2025]), AgeSex2025[sex] = \"M\") * -1",
+            "formatString": "#,0;#,0"
+          },
+          {
+            "name": "Females (right)",
+            "expression": "CALCULATE(SUM(AgeSex2025[population_2025]), AgeSex2025[sex] = \"F\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Share under 15 % (2025)",
+            "expression": "DIVIDE(CALCULATE(SUM(AgeSex2025[population_2025]), AgeSex2025[age_start] < 15), SUM(AgeSex2025[population_2025])) * 100",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Share 65+ % (2025)",
+            "expression": "DIVIDE(CALCULATE(SUM(AgeSex2025[population_2025]), AgeSex2025[age_start] >= 65), SUM(AgeSex2025[population_2025])) * 100",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Projected population 2030",
+            "expression": "SUM(ProjectionAgeSex[pop_2030])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Population 2025 (projection base)",
+            "expression": "SUM(ProjectionAgeSex[pop_2025])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Projected ages 0-4",
+            "expression": "CALCULATE([Projected population 2030], ProjectionAgeSex[age_start] = 0)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Projected share under 15 %",
+            "expression": "DIVIDE(CALCULATE([Projected population 2030], ProjectionAgeSex[age_start] < 15), [Projected population 2030]) * 100",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Projected share 65+ %",
+            "expression": "DIVIDE(CALCULATE([Projected population 2030], ProjectionAgeSex[age_start] >= 65), [Projected population 2030]) * 100",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Net migration 5 yr",
+            "expression": "SUM(ProjectionAgeSex[net_migration_5yr])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Expected lives",
+            "expression": "SUM(MarkovOccupancy[expected_lives])",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Expected deaths",
+            "expression": "SUM(ExpectedClaims[expected_deaths])",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Expected benefits USD",
+            "expression": "SUM(ExpectedClaims[expected_benefits_usd])",
+            "formatString": "\\$#,0"
+          },
+          {
+            "name": "Benefits year 1 USD",
+            "expression": "CALCULATE([Expected benefits USD], ExpectedClaims[policy_year] = 1)",
+            "formatString": "\\$#,0"
+          },
+          {
+            "name": "Benefits year 2 USD",
+            "expression": "CALCULATE([Expected benefits USD], ExpectedClaims[policy_year] = 2)",
+            "formatString": "\\$#,0"
+          },
+          {
+            "name": "Insured lives at start",
+            "expression": "CALCULATE([Expected lives], MarkovOccupancy[t_years] = 0)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Transition probability",
+            "expression": "SUM(TransitionMatrices[probability])",
+            "formatString": "0.0000"
+          },
+          {
+            "name": "Python value",
+            "expression": "SUM(Reconciliation[python_value])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Dashboard value",
+            "expression": "VAR f = SELECTEDVALUE(Reconciliation[figure])\nRETURN SWITCH(TRUE(),\n    CONTAINSSTRING(f, \"Total population\"), CALCULATE([Population 2025], REMOVEFILTERS(DistrictProfiles)),\n    CONTAINSSTRING(f, \"cohort-component Base\"), CALCULATE([Projected population 2030], ProjectionAgeSex[scenario] = \"Base\", REMOVEFILTERS(ProjectionAgeSex)),\n    CONTAINSSTRING(f, \"year 1\"), CALCULATE([Benefits year 1 USD], REMOVEFILTERS(DistrictProfiles), REMOVEFILTERS(ExpectedClaims)),\n    CONTAINSSTRING(f, \"year 2\"), CALCULATE([Benefits year 2 USD], REMOVEFILTERS(DistrictProfiles), REMOVEFILTERS(ExpectedClaims)),\n    CONTAINSSTRING(f, \"cluster\"), CALCULATE(COUNTROWS(DistrictProfiles), DistrictProfiles[cluster_name] = \"Ageing, natural decrease\", REMOVEFILTERS(DistrictProfiles)),\n    BLANK())",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Difference (dashboard - Python)",
+            "expression": "ROUND([Dashboard value] - [Python value], 2)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Reconciled",
+            "expression": "IF(ABS([Dashboard value] - [Python value]) < 0.5, \"Matches\", \"Check\")"
+          },
+          {
+            "name": "Data note",
+            "expression": "\"All figures are hypothetical (synthetic HASTS206 teaching data).\""
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "rel_AgeSex2025_district",
+        "fromTable": "AgeSex2025",
+        "fromColumn": "district_id",
+        "toTable": "DistrictProfiles",
+        "toColumn": "district_id"
+      },
+      {
+        "name": "rel_MarkovOccupancy_district",
+        "fromTable": "MarkovOccupancy",
+        "fromColumn": "district_id",
+        "toTable": "DistrictProfiles",
+        "toColumn": "district_id"
+      },
+      {
+        "name": "rel_ExpectedClaims_district",
+        "fromTable": "ExpectedClaims",
+        "fromColumn": "district_id",
+        "toTable": "DistrictProfiles",
+        "toColumn": "district_id"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"DataFolder\", \"DistrictProfiles\", \"AgeSex2025\", \"ProjectionAgeSex\", \"ProjectionMethods\", \"MarkovOccupancy\", \"ExpectedClaims\", \"TransitionMatrices\", \"ClusterCentroids\", \"KMeansDiagnostics\", \"Reconciliation\", \"KeyMeasures\"]"
+      },
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.159.1231.0"
+      }
+    ]
+  }
+}

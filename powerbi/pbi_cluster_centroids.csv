@@ -1,0 +1,4 @@
+cluster,share_u15_pct,share_65plus_pct,nmr_per_1000,piped_water_pct,n_districts,cluster_name,districts
+0,9.49173601368552,27.894612466395664,-1.5363548580205082,53.7875,8,"Ageing, natural decrease","D03, D06, D09, D12, D15, D18, D21, D24"
+1,12.902919538970297,12.563868158947324,11.86001049881508,78.42083333333333,8,Working-age in-migration hubs,"D02, D05, D08, D11, D14, D17, D20, D23"
+2,28.971174410471896,14.586555507555836,-2.7578286539348853,36.4875,8,"Young, high fertility, out-migration","D01, D04, D07, D10, D13, D16, D19, D22"

@@ -1,0 +1,60 @@
+==========================================================================================
+Author: Emeldah Munyanyi (Data Quality Analyst)
+PART 2: Data-quality log, reconciliations and cleaning decisions
+
+=== Data-quality log ===
+    check_no                                      file                                                                check                                                                                              result status
+0          1                             districts.csv                                                  Row count vs README                                                                               24 rows (expected 24)   PASS
+1          2                               age_sex.csv                                                  Row count vs README                                                                             864 rows (expected 864)   PASS
+2          3                     life_table_inputs.csv                                                  Row count vs README                                                                               18 rows (expected 18)   PASS
+3          4                  projection_scenarios.csv                                                  Row count vs README                                                                                 3 rows (expected 3)   PASS
+4          5                   insured_transitions.csv                                                  Row count vs README                                                                               96 rows (expected 96)   PASS
+5          6                             districts.csv                                               Key district_id unique                                                                                    0 duplicate keys   PASS
+6          7                               age_sex.csv                                 Key district_id+age_start+sex unique                                                                                    0 duplicate keys   PASS
+7          8                     life_table_inputs.csv                                                 Key age_start unique                                                                                    0 duplicate keys   PASS
+8          9                  projection_scenarios.csv                                                  Key scenario unique                                                                                    0 duplicate keys   PASS
+9         10                   insured_transitions.csv                            Key district_id+origin+destination unique                                                                                    0 duplicate keys   PASS
+10        11              age_sex.csv -> districts.csv                                       Join cardinality (many-to-one)                                    1 distinct row count(s) per district: [36]; 24 districts matched   PASS
+11        12              age_sex.csv -> districts.csv                                       Unmatched rows after left join                                                                                         0 unmatched   PASS
+12        13  insured_transitions.csv -> districts.csv                                       Join cardinality (many-to-one)                                                            4 rows per district for all 24 districts   PASS
+13        14                               age_sex.csv                                                    Age bands present                                                                     18 bands: 0 to 85 in steps of 5   PASS
+14        15                               age_sex.csv                                                            Sex codes                                                                                 values = ['F', 'M']   PASS
+15        16                               age_sex.csv                            Every district has all 18 bands x 2 sexes                                                                                     min combos = 36   PASS
+16        17                     life_table_inputs.csv                                                 Life-table age bands                                                                                   0 to 85, 18 bands   PASS
+17        18                             districts.csv                                              Missing piped_water_pct                                                                                 2 missing: D04, D17   FLAG
+18        19                               age_sex.csv                                                       Missing values                                                                                     0 missing cells   PASS
+19        20                  projection_scenarios.csv                                                       Missing values                                                                                     0 missing cells   PASS
+20        21                   insured_transitions.csv                                                       Missing values                                                                                     0 missing cells   PASS
+21        22                     life_table_inputs.csv                                   Blank interval_years and ax at 85+                                                                  interval blank=True, ax blank=True   NOTE
+22        23                               age_sex.csv                                         Counts non-negative integers                                                                           0 negative, 0 non-integer   PASS
+23        24                               age_sex.csv                                                survival_5yr in (0,1]                                                                              min=0.4209, max=0.9977   PASS
+24        25                               age_sex.csv                                                  Births on male rows                                                                                           total = 0   PASS
+25        26                               age_sex.csv                             Ages with births (mother's baseline age)                                                                                            15 to 49   PASS
+26        27                               age_sex.csv                                        Deaths <= baseline population                                                                                      0 rows violate   PASS
+27        28                             districts.csv                                         piped_water_pct within 0-100                                                                                  min=27.7, max=86.5   PASS
+28        29                             districts.csv                                   Population and events non-negative                                                                                         0 negatives   PASS
+29        30                     life_table_inputs.csv                              deaths < person_years and ax < interval                                                                     max m = 0.1410; ax/n max = 0.50   PASS
+30        31                  projection_scenarios.csv                           Multipliers > 0, newborn survival in [0,1]                                                                               Low/Base/High present   PASS
+31        32                   insured_transitions.csv  Exposure and initial_lives repeated identically across destinations                                    max distinct exposure per district-origin = 1; initial_lives = 1   PASS
+32        33                   insured_transitions.csv                                                  Allowed transitions                                                    [('H', 'D'), ('H', 'I'), ('I', 'D'), ('I', 'H')]   PASS
+33        34                   insured_transitions.csv                                 Counts non-negative and exposure > 0                                                                      min count=15, min exposure=250   PASS
+34        35                      age_sex vs districts                          Births: female rows vs district births_2025                                                                                     max abs gap = 0   PASS
+35        36                      age_sex vs districts                Arrivals and departures by age-sex vs district totals                                                                                     max gaps = 0, 0   PASS
+36        37                      age_sex vs districts     Deaths: district deaths minus baseline deaths (scope difference)                                   gap between 7 and 47 per district, total 621; all positive = True   NOTE
+37        38                             districts.csv                              Balancing equation closes at 1 Jan 2026                                                           max abs gap = 0 persons over 24 districts   PASS
+38        39                                 all files                                               Original CSVs retained                                  data/raw/ is read-only input; clean copy written to outputs/tables   NOTE
+39        40                               clean files                                           Cleaning decisions applied  Added population_2025 (sum of age-sex) and missing-water flag to districts; added age_group labels   NOTE
+
+Status summary: {'PASS': 35, 'NOTE': 4, 'FLAG': 1}
+
+=== Reconciliation (first 8 districts) ===
+             population_2025_agesex  births_2025  births_female_rows  deaths_2025  baseline_deaths_agesex  deaths_among_2025_births  balance_gap
+district_id                                                                                                                                     
+D01                          172445         3939                3939         2166                    2119                        47            0
+D02                          112211         2480                2480         1173                    1143                        30            0
+D03                           77907         1008                1008         1639                    1627                        12            0
+D04                           95654         2268                2268         1239                    1212                        27            0
+D05                          152444         3469                3469         1597                    1555                        42            0
+D06                           59525          774                 774         1217                    1208                         9            0
+D07                           44047          935                 935          552                     541                        11            0
+D08                           55286         1264                1264          580                     565                        15            0

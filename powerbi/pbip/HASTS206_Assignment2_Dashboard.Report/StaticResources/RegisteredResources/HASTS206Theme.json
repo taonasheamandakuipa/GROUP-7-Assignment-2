@@ -1,0 +1,26 @@
+{
+  "name": "HASTS206Theme",
+  "dataColors": [
+    "#0D47A1",
+    "#F57C00",
+    "#4FC3F7",
+    "#1E88E5",
+    "#7A7A7A",
+    "#26A69A",
+    "#8E24AA",
+    "#E53935"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#1A1A1A",
+  "tableAccent": "#1E88E5",
+  "textClasses": {
+    "label": {
+      "fontFace": "Segoe UI",
+      "color": "#333333"
+    },
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "color": "#0D47A1"
+    }
+  }
+}

@@ -1,0 +1,492 @@
+==========================================================================================
+Author: Lennox Tawanda Jaricha (Project Lead and Data Engineer)
+PART 1: Loading data (Hypothetical synthetic data (HASTS206 teaching case))
+
+=== File overview ===
+        file  rows  columns  missing_cells                                                                                                                                     column_names
+0  districts    24       10              2  district_id, district_name, region, population_2020, population_2026, births_2025, deaths_2025, arrivals_2025, departures_2025, piped_water_pct
+1    age_sex   864        9              0           district_id, age_start, sex, population_2025, baseline_deaths_2025, arrivals_2025, departures_2025, births_to_women_2025, survival_5yr
+2       life    18        5              2                                                                                              age_start, interval_years, person_years, deaths, ax
+3       scen     3        6              0                               scenario, fertility_multiplier, arrivals_multiplier, departures_multiplier, newborn_survival_f, newborn_survival_m
+4        ins    96        6              0                                                                   district_id, origin, destination, exposure_py, transition_count, initial_lives
+
+=== First rows of districts ===
+  district_id district_name    region  population_2020  population_2026  births_2025  deaths_2025  arrivals_2025  departures_2025  piped_water_pct
+0         D01  District D01  Region 1           156609           173752         3939         2166           2460             2926          31.3000
+1         D02  District D02  Region 1           103634           114605         2480         1173           2705             1618          80.5000
+2         D03  District D03  Region 1            72900            77096         1008         1639           1278             1458          56.6000
+3         D04  District D04  Region 2            83366            96331         2268         1239           1303             1655              NaN
+
+=== First rows of age_sex ===
+  district_id  age_start sex  population_2025  baseline_deaths_2025  arrivals_2025  departures_2025  births_to_women_2025  survival_5yr
+0         D01          0   F             9891                    56            116              172                     0        0.9722
+1         D01          0   M             9031                    52            119              133                     0        0.9714
+2         D01          5   F             9029                     6             90              117                     0        0.9965
+3         D01          5   M             7501                     7            142              164                     0        0.9951
+
+=== First rows of life ===
+   age_start  interval_years  person_years  deaths     ax
+0          0          5.0000        125000    1000 1.2000
+1          5          5.0000        120000     108 2.5000
+2         10          5.0000        115000      69 2.5000
+3         15          5.0000        110000      88 2.5000
+
+=== First rows of scen ===
+  scenario  fertility_multiplier  arrivals_multiplier  departures_multiplier  newborn_survival_f  newborn_survival_m
+0      Low                0.8800               0.8200                 1.1200              0.9700              0.9630
+1     Base                1.0000               1.0000                 1.0000              0.9780              0.9700
+2     High                1.1200               1.1800                 0.8800              0.9860              0.9800
+
+=== First rows of ins ===
+  district_id origin destination  exposure_py  transition_count  initial_lives
+0         D01      H           I         2212               219           1137
+1         D01      H           D         2212                37           1137
+2         D01      I           H          311                67            112
+3         D01      I           D          311                23            112
+  districts  rows =   24  expected   24  -> OK
+  age_sex    rows =  864  expected  864  -> OK
+  life       rows =   18  expected   18  -> OK
+  scen       rows =    3  expected    3  -> OK
+  ins        rows =   96  expected   96  -> OK
+==========================================================================================
+Author: Emeldah Munyanyi (Data Quality Analyst)
+PART 2: Data-quality log, reconciliations and cleaning decisions
+
+=== Data-quality log ===
+    check_no                                      file                                                                check                                                                                              result status
+0          1                             districts.csv                                                  Row count vs README                                                                               24 rows (expected 24)   PASS
+1          2                               age_sex.csv                                                  Row count vs README                                                                             864 rows (expected 864)   PASS
+2          3                     life_table_inputs.csv                                                  Row count vs README                                                                               18 rows (expected 18)   PASS
+3          4                  projection_scenarios.csv                                                  Row count vs README                                                                                 3 rows (expected 3)   PASS
+4          5                   insured_transitions.csv                                                  Row count vs README                                                                               96 rows (expected 96)   PASS
+5          6                             districts.csv                                               Key district_id unique                                                                                    0 duplicate keys   PASS
+6          7                               age_sex.csv                                 Key district_id+age_start+sex unique                                                                                    0 duplicate keys   PASS
+7          8                     life_table_inputs.csv                                                 Key age_start unique                                                                                    0 duplicate keys   PASS
+8          9                  projection_scenarios.csv                                                  Key scenario unique                                                                                    0 duplicate keys   PASS
+9         10                   insured_transitions.csv                            Key district_id+origin+destination unique                                                                                    0 duplicate keys   PASS
+10        11              age_sex.csv -> districts.csv                                       Join cardinality (many-to-one)                                    1 distinct row count(s) per district: [36]; 24 districts matched   PASS
+11        12              age_sex.csv -> districts.csv                                       Unmatched rows after left join                                                                                         0 unmatched   PASS
+12        13  insured_transitions.csv -> districts.csv                                       Join cardinality (many-to-one)                                                            4 rows per district for all 24 districts   PASS
+13        14                               age_sex.csv                                                    Age bands present                                                                     18 bands: 0 to 85 in steps of 5   PASS
+14        15                               age_sex.csv                                                            Sex codes                                                                                 values = ['F', 'M']   PASS
+15        16                               age_sex.csv                            Every district has all 18 bands x 2 sexes                                                                                     min combos = 36   PASS
+16        17                     life_table_inputs.csv                                                 Life-table age bands                                                                                   0 to 85, 18 bands   PASS
+17        18                             districts.csv                                              Missing piped_water_pct                                                                                 2 missing: D04, D17   FLAG
+18        19                               age_sex.csv                                                       Missing values                                                                                     0 missing cells   PASS
+19        20                  projection_scenarios.csv                                                       Missing values                                                                                     0 missing cells   PASS
+20        21                   insured_transitions.csv                                                       Missing values                                                                                     0 missing cells   PASS
+21        22                     life_table_inputs.csv                                   Blank interval_years and ax at 85+                                                                  interval blank=True, ax blank=True   NOTE
+22        23                               age_sex.csv                                         Counts non-negative integers                                                                           0 negative, 0 non-integer   PASS
+23        24                               age_sex.csv                                                survival_5yr in (0,1]                                                                              min=0.4209, max=0.9977   PASS
+24        25                               age_sex.csv                                                  Births on male rows                                                                                           total = 0   PASS
+25        26                               age_sex.csv                             Ages with births (mother's baseline age)                                                                                            15 to 49   PASS
+26        27                               age_sex.csv                                        Deaths <= baseline population                                                                                      0 rows violate   PASS
+27        28                             districts.csv                                         piped_water_pct within 0-100                                                                                  min=27.7, max=86.5   PASS
+28        29                             districts.csv                                   Population and events non-negative                                                                                         0 negatives   PASS
+29        30                     life_table_inputs.csv                              deaths < person_years and ax < interval                                                                     max m = 0.1410; ax/n max = 0.50   PASS
+30        31                  projection_scenarios.csv                           Multipliers > 0, newborn survival in [0,1]                                                                               Low/Base/High present   PASS
+31        32                   insured_transitions.csv  Exposure and initial_lives repeated identically across destinations                                    max distinct exposure per district-origin = 1; initial_lives = 1   PASS
+32        33                   insured_transitions.csv                                                  Allowed transitions                                                    [('H', 'D'), ('H', 'I'), ('I', 'D'), ('I', 'H')]   PASS
+33        34                   insured_transitions.csv                                 Counts non-negative and exposure > 0                                                                      min count=15, min exposure=250   PASS
+34        35                      age_sex vs districts                          Births: female rows vs district births_2025                                                                                     max abs gap = 0   PASS
+35        36                      age_sex vs districts                Arrivals and departures by age-sex vs district totals                                                                                     max gaps = 0, 0   PASS
+36        37                      age_sex vs districts     Deaths: district deaths minus baseline deaths (scope difference)                                   gap between 7 and 47 per district, total 621; all positive = True   NOTE
+37        38                             districts.csv                              Balancing equation closes at 1 Jan 2026                                                           max abs gap = 0 persons over 24 districts   PASS
+38        39                                 all files                                               Original CSVs retained                                  data/raw/ is read-only input; clean copy written to outputs/tables   NOTE
+39        40                               clean files                                           Cleaning decisions applied  Added population_2025 (sum of age-sex) and missing-water flag to districts; added age_group labels   NOTE
+
+Status summary: {'PASS': 35, 'NOTE': 4, 'FLAG': 1}
+
+=== Reconciliation (first 8 districts) ===
+             population_2025_agesex  births_2025  births_female_rows  deaths_2025  baseline_deaths_agesex  deaths_among_2025_births  balance_gap
+district_id                                                                                                                                     
+D01                          172445         3939                3939         2166                    2119                        47            0
+D02                          112211         2480                2480         1173                    1143                        30            0
+D03                           77907         1008                1008         1639                    1627                        12            0
+D04                           95654         2268                2268         1239                    1212                        27            0
+D05                          152444         3469                3469         1597                    1555                        42            0
+D06                           59525          774                 774         1217                    1208                         9            0
+D07                           44047          935                 935          552                     541                        11            0
+D08                           55286         1264                1264          580                     565                        15            0
+==========================================================================================
+Author: Mlungisi Ncube K (Population Structure Analyst)
+PART 3: District selection, pyramids and ratios (Q1a)
+
+=== Screening table used to choose the two districts ===
+               region  population_2025  share_u15_pct  share_65plus_pct     cbr     cdr     nmr  piped_water_pct
+district_id                                                                                                     
+D23          Region 4            82098        12.9000           12.2000 23.5000 10.2000 11.2000          84.1000
+D11          Region 4           145898        12.8000           12.3000 23.6000 10.5000 13.2000          70.4000
+D02          Region 1           112211        13.3000           12.4000 21.9000 10.3000  9.6000          80.5000
+D05          Region 2           152444        13.0000           12.4000 22.5000 10.3000 14.0000          77.4000
+D08          Region 3            55286        12.9000           12.4000 22.6000 10.4000 12.6000          72.9000
+D14          Region 1            73377        12.9000           12.7000 23.6000 10.4000 11.5000          82.0000
+D20          Region 3           160988        13.1000           12.8000 23.5000 10.4000  9.4000          86.5000
+D17          Region 2           152357        12.5000           13.3000 21.9000 10.1000 13.5000              NaN
+D04          Region 2            95654        27.9000           14.4000 23.6000 12.9000 -3.7000              NaN
+D16          Region 2            44988        28.8000           14.5000 24.2000 13.1000 -3.9000          35.8000
+D13          Region 1           174620        28.7000           14.5000 22.3000 13.1000 -2.9000          27.7000
+D10          Region 4           111451        29.1000           14.6000 21.5000 12.3000 -0.9000          33.5000
+D07          Region 3            44047        29.5000           14.6000 21.2000 12.5000 -2.3000          44.5000
+D22          Region 4           159453        28.6000           14.6000 22.5000 12.6000 -3.2000          44.2000
+D01          Region 1           172445        29.3000           14.6000 22.8000 12.5000 -2.7000          31.3000
+D19          Region 3            82645        30.0000           14.9000 20.9000 12.3000 -2.5000          39.0000
+D12          Region 4           104060         9.9000           26.8000 11.9000 19.7000 -0.8000          54.4000
+D24          Region 4           172718         9.7000           27.7000 12.8000 21.0000 -1.4000          48.6000
+D21          Region 3           148330         9.6000           27.8000 12.8000 19.4000 -1.1000          59.3000
+D09          Region 3           107511         9.0000           27.8000 11.9000 20.4000 -1.4000          53.6000
+D03          Region 1            77907         9.3000           28.0000 13.0000 21.1000 -2.3000          56.6000
+D15          Region 1            40504         9.5000           28.2000 14.2000 19.5000 -2.8000          56.4000
+D06          Region 2            59525         9.5000           28.2000 13.1000 20.5000 -1.3000          50.4000
+D18          Region 2           105846         9.4000           28.6000 12.5000 20.4000 -1.1000          51.0000
+
+Selected districts: D13 and D24; projection district: D13
+
+=== Structure indicators at 1 January 2025 ===
+district_id                            D13        D24
+population_2025                 174,620.00 172,718.00
+females                          88,561.00  88,728.00
+males                            86,059.00  83,990.00
+pop_0_14                         50,105.00  16,717.00
+pop_15_64                        99,192.00 108,176.00
+pop_65plus                       25,323.00  47,825.00
+sex_ratio_males_per_100_females    97.1700    94.6600
+youth_dependency_ratio             50.5100    15.4500
+old_age_dependency_ratio           25.5300    44.2100
+total_dependency_ratio             76.0400    59.6600
+[figure saved] outputs/figures/fig01_population_pyramids.png
+
+Interpretation: D13 has a youth dependency ratio of 50.5 against 15.5 in D24, while the old-age ratio is 25.5 vs 44.2. Service pressure in D13 is on schools and child health; in D24 it is on care of older people.
+==========================================================================================
+Author: Gogodi Vimbai (Demographic Rates Analyst)
+PART 4: Population balance and crude rates (Q1b)
+Total baseline population, 1 Jan 2025 (all 24 districts): 2,636,363
+Total reported population, 1 Jan 2026: 2,658,389
+
+=== Balancing equation, selected districts ===
+district_id                                 D13     D24
+population_2025                          174620  172718
+births_2025                                3915    2197
+deaths_2025                                2298    3618
+arrivals_2025                              2405    2841
+departures_2025                            2910    3089
+reconstructed_2026                       175732  171049
+population_2026                          175732  171049
+difference_reported_minus_reconstructed       0       0
+
+=== Balancing equation, all districts combined ===
+                                         All 24 districts
+population_2025                                   2636363
+births_2025                                         51794
+deaths_2025                                         37507
+arrivals_2025                                       49358
+departures_2025                                     41619
+reconstructed_2026                                2658389
+population_2026                                   2658389
+difference_reported_minus_reconstructed                 0
+Districts where the reconstruction differs from the report: 0 of 24
+
+=== Crude rates per 1,000 residents, 2025 ===
+district_id                 D13        D24
+exposure_2025        175,176.00 171,883.50
+CBR_per_1000            22.3500    12.7800
+CDR_per_1000            13.1200    21.0500
+RNI_per_1000             9.2300    -8.2700
+NMR_per_1000            -2.8800    -1.4400
+growth_rate_per_1000     6.3500    -9.7100
+[figure saved] outputs/figures/fig02_crude_rates.png
+
+D13: growth 6.3 per 1,000 = natural increase 9.2 + net migration -2.9.
+D24: growth -9.7 per 1,000 = natural increase -8.3 + net migration -1.4.
+==========================================================================================
+Author: Ketso Thabiso Mdlongwa (Mortality and Life-Table Analyst)
+PART 5: Abridged life table (Q1c)
+
+=== Abridged life table (radix 100,000) ===
+   age_group      n     ax     mx     qx         lx        dx         Lx           Tx      ex
+0        0-4 5.0000 1.2000 0.0080 0.0388 100,000.00  3,882.00 485,248.00 7,310,913.00 73.1100
+1        5-9 5.0000 2.5000 0.0009 0.0045  96,118.00    432.00 479,511.00 6,825,664.00 71.0100
+2      10-14 5.0000 2.5000 0.0006 0.0030  95,686.00    287.00 477,716.00 6,346,153.00 66.3200
+3      15-19 5.0000 2.5000 0.0008 0.0040  95,400.00    381.00 476,047.00 5,868,437.00 61.5100
+4      20-24 5.0000 2.5000 0.0011 0.0055  95,019.00    523.00 473,786.00 5,392,390.00 56.7500
+5      25-29 5.0000 2.5000 0.0015 0.0075  94,496.00    706.00 470,713.00 4,918,604.00 52.0500
+6      30-34 5.0000 2.5000 0.0020 0.0100  93,789.00    933.00 466,614.00 4,447,891.00 47.4200
+7      35-39 5.0000 2.5000 0.0027 0.0134  92,856.00  1,245.00 461,168.00 3,981,277.00 42.8800
+8      40-44 5.0000 2.5000 0.0035 0.0174  91,611.00  1,592.00 454,076.00 3,520,109.00 38.4200
+9      45-49 5.0000 2.5000 0.0048 0.0237  90,019.00  2,135.00 444,759.00 3,066,033.00 34.0600
+10     50-54 5.0000 2.5000 0.0065 0.0320  87,884.00  2,813.00 432,388.00 2,621,274.00 29.8300
+11     55-59 5.0000 2.5000 0.0090 0.0440  85,071.00  3,744.00 415,995.00 2,188,886.00 25.7300
+12     60-64 5.0000 2.5000 0.0130 0.0630  81,327.00  5,120.00 393,835.00 1,772,891.00 21.8000
+13     65-69 5.0000 2.5000 0.0190 0.0907  76,207.00  6,911.00 363,757.00 1,379,056.00 18.1000
+14     70-74 5.0000 2.5000 0.0290 0.1352  69,296.00  9,369.00 323,057.00 1,015,299.00 14.6500
+15     75-79 5.0000 2.5000 0.0470 0.2103  59,927.00 12,602.00 268,130.00   692,242.00 11.5500
+16     80-84 5.0000 2.5000 0.0780 0.3264  47,325.00 15,445.00 198,012.00   424,112.00  8.9600
+17       85+    NaN    NaN 0.1410 1.0000  31,880.00 31,880.00 226,099.00   226,099.00  7.0900
+
+Life expectancy at birth e0 = 73.11 years; at age 65 e65 = 18.10 years
+
+=== Life-table checks ===
+                                      check        value       target  abs_difference  passed
+0               Sum of d_x equals the radix   100,000.00   100,000.00          0.0000    True
+1             T_0 equals the sum of all L_x 7,310,912.73 7,310,912.73          0.0000    True
+2                    e_85+ equals 1 / m_85+       7.0922       7.0922          0.0000    True
+3                     l_5 = l_0 x (1 - q_0)    96,118.01    96,118.01          0.0000    True
+4  Manual q_0 = 5(0.008)/(1+(5-1.2)(0.008))       0.0388       0.0388          0.0000    True
+[figure saved] outputs/figures/fig03_life_table.png
+==========================================================================================
+Author: Stuart Gavera (Population Projection Modeller)
+PART 6: Growth models and cohort-component projection for D13 (Q2a, Q2b)
+
+=== Arithmetic and geometric growth, 2020-2025 fit ===
+                                    D13
+P2020_reported               160,007.00
+P2025_sum_of_age_sex         174,620.00
+arithmetic_increase_per_year   2,922.60
+arithmetic_rate_per_year         0.0183
+geometric_rate_per_year          0.0176
+arithmetic_P2030             189,233.00
+geometric_P2030              190,567.57
+Inputs that are estimates: P2020 (reported opening stock) and P2025 (sum of the age-sex estimates). The 2030 totals are conditional projections: they hold only if the 2020-25 pattern of change continues unchanged.
+
+=== Cohort-component accounting by scenario ===
+scenario                       Low       Base       High
+P2025                   174,620.00 174,620.00 174,620.00
+deaths_baseline_cohorts   9,522.00   9,522.00   9,522.00
+births_5yr               17,226.00  19,575.00  21,924.00
+deaths_among_births         578.30     510.50     374.00
+net_migration_5yr        -6,435.50  -2,525.00   1,385.50
+P2030                   175,310.30 181,637.50 188,033.50
+identity_check_gap          0.0000     0.0000    -0.0000
+negative_cells              0.0000     0.0000     0.0000
+85+ survivors check: model 4,836.43 vs manual 4,836.43
+All accounting checks passed: identity gap = 0, no negative cells.
+
+=== Projected population on 1 Jan 2030 by age and sex, D13 ===
+scenario age_group sex      Low     Base      High
+0              0-4   F 8,247.00 9,671.00 11,113.00
+1              0-4   M 7,726.00 9,144.00 10,611.00
+2              5-9   F 8,291.00 8,534.00  8,776.00
+3              5-9   M 8,385.00 8,560.00  8,735.00
+4            10-14   F 8,268.00 8,453.00  8,638.00
+5            10-14   M 8,168.00 8,320.00  8,473.00
+6            15-19   F 7,185.00 7,352.00  7,519.00
+7            15-19   M 7,178.00 7,332.00  7,486.00
+8            20-24   F 7,542.00 7,719.00  7,896.00
+9            20-24   M 6,707.00 6,846.00  6,986.00
+10           25-29   F 6,536.00 6,647.00  6,758.00
+11           25-29   M 6,579.00 6,676.00  6,773.00
+12           30-34   F 5,837.00 5,958.00  6,080.00
+13           30-34   M 5,681.00 5,808.00  5,936.00
+14           35-39   F 5,181.00 5,348.00  5,516.00
+15           35-39   M 5,453.00 5,569.00  5,685.00
+16           40-44   F 5,151.00 5,245.00  5,339.00
+17           40-44   M 4,967.00 5,096.00  5,226.00
+18           45-49   F 3,891.00 3,989.00  4,087.00
+19           45-49   M 4,554.00 4,640.00  4,725.00
+20           50-54   F 3,745.00 3,815.00  3,886.00
+21           50-54   M 3,381.00 3,430.00  3,479.00
+22           55-59   F 3,525.00 3,620.00  3,716.00
+23           55-59   M 3,165.00 3,251.00  3,337.00
+24           60-64   F 3,681.00 3,744.00  3,806.00
+25           60-64   M 3,058.00 3,123.00  3,189.00
+26           65-69   F 2,821.00 2,870.00  2,918.00
+27           65-69   M 2,574.00 2,625.00  2,676.00
+28           70-74   F 2,606.00 2,670.00  2,735.00
+29           70-74   M 2,357.00 2,418.00  2,479.00
+30           75-79   F 2,023.00 2,080.00  2,137.00
+31           75-79   M 2,233.00 2,271.00  2,310.00
+32           80-84   F 2,088.00 2,132.00  2,176.00
+33           80-84   M 1,840.00 1,888.00  1,936.00
+34             85+   F 2,249.00 2,300.00  2,351.00
+35             85+   M 2,438.00 2,491.00  2,544.00
+==========================================================================================
+Author: Taonashe Amanda Kuipa (Scenario and Sensitivity Analyst)
+PART 7: Projection comparison and sensitivity for D13 (Q2c)
+
+=== Projected totals for 1 Jan 2030 and age shares ===
+                  method      P2030  share_u15_pct  share_65plus_pct  change_from_2025  pct_change_from_2025  difference_vs_CC_Base
+0    Baseline 1 Jan 2025 174,620.00        28.6900           14.5000            0.0000                0.0000              -7,017.53
+1             Arithmetic 189,233.00            NaN               NaN         14,613.00                8.3700               7,595.47
+2              Geometric 190,567.57            NaN               NaN         15,947.57                9.1300               8,930.03
+3   Cohort-component Low 175,310.27        28.0000           13.2500            690.27                0.4000              -6,327.26
+4  Cohort-component Base 181,637.53        29.0000           13.0700          7,017.53                4.0200                 0.0000
+5  Cohort-component High 188,033.53        29.9700           12.9000         13,413.53                7.6800               6,395.99
+
+=== Sensitivity: ages 0-4 on 1 Jan 2030 (only fertility changed) ===
+           Base  Base + High fertility   change  pct_change
+sex                                                        
+F      9,670.70              10,796.40 1,125.70     11.6000
+M      9,143.80              10,305.80 1,162.10     12.7000
+Total 18,814.50              21,102.20 2,287.70     12.2000
+Total population changes from 181,638 to 183,925; share under 15 from 29.00% to 29.89%.
+[figure saved] outputs/figures/fig04_projection_comparison.png
+[figure saved] outputs/figures/fig05_projection_age_profile.png
+==========================================================================================
+Author: Hillary Zivuku (Actuarial Modeller (Markov Model))
+PART 8: Three-state continuous-time Markov model (Q3)
+
+=== Pooled jumps, exposure and transition intensities ===
+  origin destination  pooled_jumps  pooled_exposure_py  intensity
+0      H           D           895           49,764.00     0.0180
+1      H           I          5152           49,764.00     0.1035
+2      I           D           970           14,417.00     0.0673
+3      I           H          3533           14,417.00     0.2451
+
+=== Generator matrix Q (order H, I, D) ===
+        H       I       D
+H -0.1215  0.1035  0.0180
+I  0.2451 -0.3123  0.0673
+D  0.0000  0.0000 -0.0000
+Row sums of Q: [0. 0. 0.]  -> all zero: True
+Off-diagonal entries non-negative: True; diagonal non-positive: True
+[figure saved] outputs/figures/fig06_markov_state_diagram.png
+
+=== Mean holding times in the living states ===
+  state  total_exit_intensity  mean_holding_time_years
+0     H                0.1215                   8.2295
+1     I                0.3123                   3.2016
+
+=== Next-jump destinations from the ill state ===
+  from    next_state  probability
+0    I  H (recovery)       0.7846
+1    I     D (death)       0.2154
+
+=== Transition probability matrix P(1) ===
+       H      I      D
+H 0.8962 0.0838 0.0200
+I 0.1984 0.7417 0.0599
+D 0.0000 0.0000 1.0000
+
+=== Transition probability matrix P(2) ===
+       H      I      D
+H 0.8197 0.1373 0.0430
+I 0.3249 0.5667 0.1084
+D 0.0000 0.0000 1.0000
+
+=== Probability checks ===
+                                            check  result  max_abs_diff
+0                       P(1) entries non-negative    True           NaN
+1                       P(2) entries non-negative    True           NaN
+2                              P(1) rows sum to 1    True           NaN
+3                              P(2) rows sum to 1    True           NaN
+4  Death absorbing: row D of P(1), P(2) = (0,0,1)    True           NaN
+5         P(2) = P(1) @ P(1) (Chapman-Kolmogorov)    True        0.0000
+
+Next-jump recovery probability from I = 0.7846, but P_IH(1) = 0.1984. The jump probability ignores timing (it is where the next move goes, whenever it happens), while P_IH(1) is the chance of being healthy exactly at t = 1: some ill lives have not moved yet, and some recover and fall ill again or die within the year.
+
+=== Expected occupancy of the pooled insured cohort ===
+            H        I        D     total
+t=0 20,080.00 3,576.00   0.0000 23,656.00
+t=1 18,704.20 4,335.20   616.50 23,656.00
+t=2 17,622.00 4,783.00 1,251.00 23,656.00
+
+=== Expected covered deaths and benefit payments (USD 1,000 per death, undiscounted) ===
+           year  expected_deaths  expected_benefits_usd
+0  Year 1 (0-1)           616.50             616,500.63
+1  Year 2 (1-2)           634.46             634,456.54
+2     Two years         1,250.96           1,250,957.17
+District split reconciles to pooled claims: year 1 616,500.63 vs 616,500.63
+[figure saved] outputs/figures/fig07_markov_occupancy.png
+==========================================================================================
+Author: Shaun Kanojerera (Feature Engineering Analyst)
+PART 9: Clustering feature table, imputation, outliers, standardisation (Q4a)
+Correlation of water access with the other features (22 complete districts):
+share_u15_pct      -0.6490
+share_65plus_pct   -0.2250
+nmr_per_1000        0.8650
+piped_water_pct     1.0000
+
+=== Imputation of the two missing water values (k = 3 nearest neighbours) ===
+  district_id     neighbours neighbour_water_values  imputed_knn  overall_median_alternative  region_median_alternative
+0         D04  D22, D16, D13       44.2, 35.8, 27.7      35.9000                     54.0000                    50.7000
+1         D17  D05, D11, D08       77.4, 70.4, 72.9      73.5700                     54.0000                    50.7000
+
+=== Outlier check (IQR rule and |z| > 3) ===
+            feature    mean      sd     min     max  max_abs_z iqr_outliers z_above_3
+0     share_u15_pct 17.1200  8.5000  9.0300 29.9600     1.5100         none      none
+1  share_65plus_pct 18.3500  6.8100 12.2200 28.6300     1.5100         none      none
+2      nmr_per_1000  2.5200  6.7200 -3.9400 13.9900     1.7100         none      none
+3   piped_water_pct 56.2300 17.8800 27.7000 86.5000     1.6900         none      none
+[figure saved] outputs/figures/fig08_feature_boxplots.png
+
+After standardising: means [0.0, -0.0, 0.0, 0.0] sds [1.0, 1.0, 1.0, 1.0]
+district_id is excluded from the features: it is only a label. Its order (D01...D24) has no numerical meaning, so using it would create false distances between districts.
+
+=== Feature table (original units) ===
+             share_u15_pct  share_65plus_pct  nmr_per_1000  piped_water_pct  piped_water_imputed_flag
+district_id                                                                                          
+D01                29.2700           14.6300       -2.6900          31.3000                         0
+D02                13.2900           12.4100        9.5800          80.5000                         0
+D03                 9.2800           27.9700       -2.3200          56.6000                         0
+D04                27.8800           14.3900       -3.6700          35.9000                         1
+D05                12.9700           12.4200       13.9900          77.4000                         0
+D06                 9.5200           28.2000       -1.2700          50.4000                         0
+D07                29.4600           14.5900       -2.2900          44.5000                         0
+D08                12.8700           12.4300       12.5800          72.9000                         0
+D09                 9.0300           27.8400       -1.4200          53.6000                         0
+D10                29.1300           14.5700       -0.9400          33.5000                         0
+D11                12.7700           12.2600       13.1800          70.4000                         0
+D12                 9.9300           26.8400       -0.8500          54.4000                         0
+D13                28.6900           14.5000       -2.8800          27.7000                         0
+D14                12.8900           12.7400       11.4800          82.0000                         0
+D15                 9.5400           28.1900       -2.7800          56.4000                         0
+D16                28.8100           14.4900       -3.9400          35.8000                         0
+D17                12.5000           13.2500       13.4800          73.5700                         1
+D18                 9.4000           28.6300       -1.1100          51.0000                         0
+D19                29.9600           14.9300       -2.4700          39.0000                         0
+D20                13.0800           12.7800        9.4100          86.5000                         0
+D21                 9.5600           27.7900       -1.1000          59.3000                         0
+D22                28.5600           14.5900       -3.1800          44.2000                         0
+D23                12.8600           12.2200       11.1800          84.1000                         0
+D24                 9.6800           27.6900       -1.4400          48.6000                         0
+==========================================================================================
+Author: Trish Tembo (Clustering Analyst and Dashboard Integrator)
+PART 10: k-means clustering, diagnostics, stability and exports (Q4b-c)
+
+=== k-means diagnostics (n_init = 50, seed = 2026) ===
+   k    WCSS  mean_silhouette  pct_reduction_from_previous_k
+0  1 96.0000              NaN                            NaN
+1  2 42.7161           0.5950                        55.5041
+2  3  2.5675           0.8639                        93.9894
+3  4  1.6048           0.7834                        37.4972
+4  5  1.0390           0.6372                        35.2557
+5  6  0.8082           0.4739                        22.2177
+[figure saved] outputs/figures/fig09_wcss_silhouette.png
+[figure saved] outputs/figures/fig10_silhouette_candidates.png
+k=2: min silhouette 0.393, districts with s(i) < 0.1: 0
+k=3: min silhouette 0.794, districts with s(i) < 0.1: 0
+
+=== Stability of the k = 3 solution (adjusted Rand index) ===
+                                                 check  ARI_vs_primary  districts_changing_cluster
+0                   Different seed (7 instead of 2026)          1.0000                           0
+1  Overall-median imputation of water (instead of KNN)          1.0000                           0
+2       Drop piped water (3 demographic features only)          1.0000                           0
+
+=== Membership cross-tab: primary vs median imputation (labels may be renamed) ===
+median_imputation  0  1  2
+primary                   
+0                  8  0  0
+1                  0  8  0
+2                  0  0  8
+Centroid back-transform equals cluster means: True
+
+=== Cluster sizes and centroids (original units) ===
+                                 cluster_name  n_districts  share_u15_pct  share_65plus_pct  nmr_per_1000  piped_water_pct                               districts
+cluster                                                                                                                                                           
+0                    Ageing, natural decrease            8         9.4900           27.8900       -1.5400          53.7900  D03, D06, D09, D12, D15, D18, D21, D24
+1               Working-age in-migration hubs            8        12.9000           12.5600       11.8600          78.4200  D02, D05, D08, D11, D14, D17, D20, D23
+2        Young, high fertility, out-migration            8        28.9700           14.5900       -2.7600          36.4900  D01, D04, D07, D10, D13, D16, D19, D22
+[figure saved] outputs/figures/fig11_cluster_map.png
+
+=== Python figures to reconcile with the Power BI dashboard ===
+                                            figure  python_value
+0       Total population 1 Jan 2025 (24 districts)  2,636,363.00
+1             D13 cohort-component Base total 2030    181,637.53
+2                   Expected benefits year 1 (USD)    616,500.63
+3                   Expected benefits year 2 (USD)    634,456.54
+4  Districts in 'Ageing, natural decrease' cluster        8.0000
+
+All Power BI tables written to outputs/tables/pbi_*.csv
+
+==========================================================================================
+Finished all ten parts in 2.4 s. Outputs in outputs/tables, outputs/figures and outputs/logs.

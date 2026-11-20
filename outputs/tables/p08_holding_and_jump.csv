@@ -1,0 +1,3 @@
+state,total_exit_intensity,mean_holding_time_years,from,next_state,probability
+H,0.12151354392733703,8.229535306763685,I,H (recovery),0.7845880524095048
+I,0.3123395990844142,3.2016433488785254,I,D (death),0.21541194759049523

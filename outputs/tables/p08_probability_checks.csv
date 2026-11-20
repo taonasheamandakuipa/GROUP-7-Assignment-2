@@ -1,0 +1,7 @@
+check,result,max_abs_diff
+P(1) entries non-negative,True,
+P(2) entries non-negative,True,
+P(1) rows sum to 1,True,
+P(2) rows sum to 1,True,
+"Death absorbing: row D of P(1), P(2) = (0,0,1)",True,
+P(2) = P(1) @ P(1) (Chapman-Kolmogorov),True,2.220446049250313e-16

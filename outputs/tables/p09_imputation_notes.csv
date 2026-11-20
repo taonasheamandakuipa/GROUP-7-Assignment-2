@@ -1,0 +1,3 @@
+district_id,neighbours,neighbour_water_values,imputed_knn,overall_median_alternative,region_median_alternative
+D04,"D22, D16, D13","44.2, 35.8, 27.7",35.9,54.0,50.7
+D17,"D05, D11, D08","77.4, 70.4, 72.9",73.56666666666668,54.0,50.7

@@ -1,0 +1,41 @@
+check_no,file,check,result,status,decision_or_action
+1,districts.csv,Row count vs README,24 rows (expected 24),PASS,None needed
+2,age_sex.csv,Row count vs README,864 rows (expected 864),PASS,None needed
+3,life_table_inputs.csv,Row count vs README,18 rows (expected 18),PASS,None needed
+4,projection_scenarios.csv,Row count vs README,3 rows (expected 3),PASS,None needed
+5,insured_transitions.csv,Row count vs README,96 rows (expected 96),PASS,None needed
+6,districts.csv,Key district_id unique,0 duplicate keys,PASS,None needed
+7,age_sex.csv,Key district_id+age_start+sex unique,0 duplicate keys,PASS,None needed
+8,life_table_inputs.csv,Key age_start unique,0 duplicate keys,PASS,None needed
+9,projection_scenarios.csv,Key scenario unique,0 duplicate keys,PASS,None needed
+10,insured_transitions.csv,Key district_id+origin+destination unique,0 duplicate keys,PASS,None needed
+11,age_sex.csv -> districts.csv,Join cardinality (many-to-one),1 distinct row count(s) per district: [36]; 24 districts matched,PASS,None needed
+12,age_sex.csv -> districts.csv,Unmatched rows after left join,0 unmatched,PASS,None needed
+13,insured_transitions.csv -> districts.csv,Join cardinality (many-to-one),4 rows per district for all 24 districts,PASS,None needed
+14,age_sex.csv,Age bands present,18 bands: 0 to 85 in steps of 5,PASS,None needed
+15,age_sex.csv,Sex codes,"values = ['F', 'M']",PASS,None needed
+16,age_sex.csv,Every district has all 18 bands x 2 sexes,min combos = 36,PASS,None needed
+17,life_table_inputs.csv,Life-table age bands,"0 to 85, 18 bands",PASS,None needed
+18,districts.csv,Missing piped_water_pct,"2 missing: D04, D17",FLAG,"Kept blank in the clean file; imputed only for clustering (Part 9, KNN rule)"
+19,age_sex.csv,Missing values,0 missing cells,PASS,None needed
+20,projection_scenarios.csv,Missing values,0 missing cells,PASS,None needed
+21,insured_transitions.csv,Missing values,0 missing cells,PASS,None needed
+22,life_table_inputs.csv,Blank interval_years and ax at 85+,"interval blank=True, ax blank=True",NOTE,Structural: open interval. We use q85+=1 and L85+=l85/m85+
+23,age_sex.csv,Counts non-negative integers,"0 negative, 0 non-integer",PASS,None needed
+24,age_sex.csv,"survival_5yr in (0,1]","min=0.4209, max=0.9977",PASS,None needed
+25,age_sex.csv,Births on male rows,total = 0,PASS,Structural zeros kept; births summed over female rows only
+26,age_sex.csv,Ages with births (mother's baseline age),15 to 49,PASS,None needed
+27,age_sex.csv,Deaths <= baseline population,0 rows violate,PASS,None needed
+28,districts.csv,piped_water_pct within 0-100,"min=27.7, max=86.5",PASS,None needed
+29,districts.csv,Population and events non-negative,0 negatives,PASS,None needed
+30,life_table_inputs.csv,deaths < person_years and ax < interval,max m = 0.1410; ax/n max = 0.50,PASS,None needed
+31,projection_scenarios.csv,"Multipliers > 0, newborn survival in [0,1]",Low/Base/High present,PASS,None needed
+32,insured_transitions.csv,Exposure and initial_lives repeated identically across destinations,max distinct exposure per district-origin = 1; initial_lives = 1,PASS,Counted once per district-origin (README rule) to avoid double counting
+33,insured_transitions.csv,Allowed transitions,"[('H', 'D'), ('H', 'I'), ('I', 'D'), ('I', 'H')]",PASS,None needed
+34,insured_transitions.csv,Counts non-negative and exposure > 0,"min count=15, min exposure=250",PASS,None needed
+35,age_sex vs districts,Births: female rows vs district births_2025,max abs gap = 0,PASS,None needed
+36,age_sex vs districts,Arrivals and departures by age-sex vs district totals,"max gaps = 0, 0",PASS,None needed
+37,age_sex vs districts,Deaths: district deaths minus baseline deaths (scope difference),"gap between 7 and 47 per district, total 621; all positive = True",NOTE,Not an error: district deaths also include deaths among babies born in 2025; the age-sex file only covers residents present on 1 Jan 2025
+38,districts.csv,Balancing equation closes at 1 Jan 2026,max abs gap = 0 persons over 24 districts,PASS,None needed
+39,all files,Original CSVs retained,data/raw/ is read-only input; clean copy written to outputs/tables,NOTE,None needed
+40,clean files,Cleaning decisions applied,Added population_2025 (sum of age-sex) and missing-water flag to districts; added age_group labels,NOTE,"No rows dropped, no values changed"
