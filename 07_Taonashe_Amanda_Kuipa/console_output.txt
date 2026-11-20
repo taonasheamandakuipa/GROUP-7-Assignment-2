@@ -1,0 +1,22 @@
+==========================================================================================
+Author: Taonashe Amanda Kuipa (Scenario and Sensitivity Analyst)
+PART 7: Projection comparison and sensitivity for D13 (Q2c)
+
+=== Projected totals for 1 Jan 2030 and age shares ===
+                  method      P2030  share_u15_pct  share_65plus_pct  change_from_2025  pct_change_from_2025  difference_vs_CC_Base
+0    Baseline 1 Jan 2025 174,620.00        28.6900           14.5000            0.0000                0.0000              -7,017.53
+1             Arithmetic 189,233.00            NaN               NaN         14,613.00                8.3700               7,595.47
+2              Geometric 190,567.57            NaN               NaN         15,947.57                9.1300               8,930.03
+3   Cohort-component Low 175,310.27        28.0000           13.2500            690.27                0.4000              -6,327.26
+4  Cohort-component Base 181,637.53        29.0000           13.0700          7,017.53                4.0200                 0.0000
+5  Cohort-component High 188,033.53        29.9700           12.9000         13,413.53                7.6800               6,395.99
+
+=== Sensitivity: ages 0-4 on 1 Jan 2030 (only fertility changed) ===
+           Base  Base + High fertility   change  pct_change
+sex                                                        
+F      9,670.70              10,796.40 1,125.70     11.6000
+M      9,143.80              10,305.80 1,162.10     12.7000
+Total 18,814.50              21,102.20 2,287.70     12.2000
+Total population changes from 181,638 to 183,925; share under 15 from 29.00% to 29.89%.
+[figure saved] outputs/figures/fig04_projection_comparison.png
+[figure saved] outputs/figures/fig05_projection_age_profile.png
