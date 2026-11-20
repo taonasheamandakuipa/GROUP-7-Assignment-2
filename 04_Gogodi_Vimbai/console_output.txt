@@ -1,0 +1,41 @@
+==========================================================================================
+Author: Gogodi Vimbai (Demographic Rates Analyst)
+PART 4: Population balance and crude rates (Q1b)
+Total baseline population, 1 Jan 2025 (all 24 districts): 2,636,363
+Total reported population, 1 Jan 2026: 2,658,389
+
+=== Balancing equation, selected districts ===
+district_id                                 D13     D24
+population_2025                          174620  172718
+births_2025                                3915    2197
+deaths_2025                                2298    3618
+arrivals_2025                              2405    2841
+departures_2025                            2910    3089
+reconstructed_2026                       175732  171049
+population_2026                          175732  171049
+difference_reported_minus_reconstructed       0       0
+
+=== Balancing equation, all districts combined ===
+                                         All 24 districts
+population_2025                                   2636363
+births_2025                                         51794
+deaths_2025                                         37507
+arrivals_2025                                       49358
+departures_2025                                     41619
+reconstructed_2026                                2658389
+population_2026                                   2658389
+difference_reported_minus_reconstructed                 0
+Districts where the reconstruction differs from the report: 0 of 24
+
+=== Crude rates per 1,000 residents, 2025 ===
+district_id                 D13        D24
+exposure_2025        175,176.00 171,883.50
+CBR_per_1000            22.3500    12.7800
+CDR_per_1000            13.1200    21.0500
+RNI_per_1000             9.2300    -8.2700
+NMR_per_1000            -2.8800    -1.4400
+growth_rate_per_1000     6.3500    -9.7100
+[figure saved] outputs/figures/fig02_crude_rates.png
+
+D13: growth 6.3 per 1,000 = natural increase 9.2 + net migration -2.9.
+D24: growth -9.7 per 1,000 = natural increase -8.3 + net migration -1.4.
