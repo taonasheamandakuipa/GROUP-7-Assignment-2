@@ -1,0 +1,4 @@
+check,ARI_vs_primary,districts_changing_cluster
+Different seed (7 instead of 2026),1.0,0
+Overall-median imputation of water (instead of KNN),1.0,0
+Drop piped water (3 demographic features only),1.0,0

@@ -1,0 +1,48 @@
+==========================================================================================
+Author: Trish Tembo (Clustering Analyst and Dashboard Integrator)
+PART 10: k-means clustering, diagnostics, stability and exports (Q4b-c)
+
+=== k-means diagnostics (n_init = 50, seed = 2026) ===
+   k    WCSS  mean_silhouette  pct_reduction_from_previous_k
+0  1 96.0000              NaN                            NaN
+1  2 42.7161           0.5950                        55.5041
+2  3  2.5675           0.8639                        93.9894
+3  4  1.6048           0.7834                        37.4972
+4  5  1.0390           0.6372                        35.2557
+5  6  0.8082           0.4739                        22.2177
+[figure saved] outputs/figures/fig09_wcss_silhouette.png
+[figure saved] outputs/figures/fig10_silhouette_candidates.png
+k=2: min silhouette 0.393, districts with s(i) < 0.1: 0
+k=3: min silhouette 0.794, districts with s(i) < 0.1: 0
+
+=== Stability of the k = 3 solution (adjusted Rand index) ===
+                                                 check  ARI_vs_primary  districts_changing_cluster
+0                   Different seed (7 instead of 2026)          1.0000                           0
+1  Overall-median imputation of water (instead of KNN)          1.0000                           0
+2       Drop piped water (3 demographic features only)          1.0000                           0
+
+=== Membership cross-tab: primary vs median imputation (labels may be renamed) ===
+median_imputation  0  1  2
+primary                   
+0                  8  0  0
+1                  0  8  0
+2                  0  0  8
+Centroid back-transform equals cluster means: True
+
+=== Cluster sizes and centroids (original units) ===
+                                 cluster_name  n_districts  share_u15_pct  share_65plus_pct  nmr_per_1000  piped_water_pct                               districts
+cluster                                                                                                                                                           
+0                    Ageing, natural decrease            8         9.4900           27.8900       -1.5400          53.7900  D03, D06, D09, D12, D15, D18, D21, D24
+1               Working-age in-migration hubs            8        12.9000           12.5600       11.8600          78.4200  D02, D05, D08, D11, D14, D17, D20, D23
+2        Young, high fertility, out-migration            8        28.9700           14.5900       -2.7600          36.4900  D01, D04, D07, D10, D13, D16, D19, D22
+[figure saved] outputs/figures/fig11_cluster_map.png
+
+=== Python figures to reconcile with the Power BI dashboard ===
+                                            figure  python_value
+0       Total population 1 Jan 2025 (24 districts)  2,636,363.00
+1             D13 cohort-component Base total 2030    181,637.53
+2                   Expected benefits year 1 (USD)    616,500.63
+3                   Expected benefits year 2 (USD)    634,456.54
+4  Districts in 'Ageing, natural decrease' cluster        8.0000
+
+All Power BI tables written to outputs/tables/pbi_*.csv
