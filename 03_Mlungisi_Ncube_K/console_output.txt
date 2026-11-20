@@ -1,0 +1,49 @@
+==========================================================================================
+Author: Mlungisi Ncube K (Population Structure Analyst)
+PART 3: District selection, pyramids and ratios (Q1a)
+
+=== Screening table used to choose the two districts ===
+               region  population_2025  share_u15_pct  share_65plus_pct     cbr     cdr     nmr  piped_water_pct
+district_id                                                                                                     
+D23          Region 4            82098        12.9000           12.2000 23.5000 10.2000 11.2000          84.1000
+D11          Region 4           145898        12.8000           12.3000 23.6000 10.5000 13.2000          70.4000
+D02          Region 1           112211        13.3000           12.4000 21.9000 10.3000  9.6000          80.5000
+D05          Region 2           152444        13.0000           12.4000 22.5000 10.3000 14.0000          77.4000
+D08          Region 3            55286        12.9000           12.4000 22.6000 10.4000 12.6000          72.9000
+D14          Region 1            73377        12.9000           12.7000 23.6000 10.4000 11.5000          82.0000
+D20          Region 3           160988        13.1000           12.8000 23.5000 10.4000  9.4000          86.5000
+D17          Region 2           152357        12.5000           13.3000 21.9000 10.1000 13.5000              NaN
+D04          Region 2            95654        27.9000           14.4000 23.6000 12.9000 -3.7000              NaN
+D16          Region 2            44988        28.8000           14.5000 24.2000 13.1000 -3.9000          35.8000
+D13          Region 1           174620        28.7000           14.5000 22.3000 13.1000 -2.9000          27.7000
+D10          Region 4           111451        29.1000           14.6000 21.5000 12.3000 -0.9000          33.5000
+D07          Region 3            44047        29.5000           14.6000 21.2000 12.5000 -2.3000          44.5000
+D22          Region 4           159453        28.6000           14.6000 22.5000 12.6000 -3.2000          44.2000
+D01          Region 1           172445        29.3000           14.6000 22.8000 12.5000 -2.7000          31.3000
+D19          Region 3            82645        30.0000           14.9000 20.9000 12.3000 -2.5000          39.0000
+D12          Region 4           104060         9.9000           26.8000 11.9000 19.7000 -0.8000          54.4000
+D24          Region 4           172718         9.7000           27.7000 12.8000 21.0000 -1.4000          48.6000
+D21          Region 3           148330         9.6000           27.8000 12.8000 19.4000 -1.1000          59.3000
+D09          Region 3           107511         9.0000           27.8000 11.9000 20.4000 -1.4000          53.6000
+D03          Region 1            77907         9.3000           28.0000 13.0000 21.1000 -2.3000          56.6000
+D15          Region 1            40504         9.5000           28.2000 14.2000 19.5000 -2.8000          56.4000
+D06          Region 2            59525         9.5000           28.2000 13.1000 20.5000 -1.3000          50.4000
+D18          Region 2           105846         9.4000           28.6000 12.5000 20.4000 -1.1000          51.0000
+
+Selected districts: D13 and D24; projection district: D13
+
+=== Structure indicators at 1 January 2025 ===
+district_id                            D13        D24
+population_2025                 174,620.00 172,718.00
+females                          88,561.00  88,728.00
+males                            86,059.00  83,990.00
+pop_0_14                         50,105.00  16,717.00
+pop_15_64                        99,192.00 108,176.00
+pop_65plus                       25,323.00  47,825.00
+sex_ratio_males_per_100_females    97.1700    94.6600
+youth_dependency_ratio             50.5100    15.4500
+old_age_dependency_ratio           25.5300    44.2100
+total_dependency_ratio             76.0400    59.6600
+[figure saved] outputs/figures/fig01_population_pyramids.png
+
+Interpretation: D13 has a youth dependency ratio of 50.5 against 15.5 in D24, while the old-age ratio is 25.5 vs 44.2. Service pressure in D13 is on schools and child health; in D24 it is on care of older people.
